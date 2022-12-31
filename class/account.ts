@@ -1,8 +1,8 @@
 export abstract class Account {//numa classe abstrata nós podemos centralizar todos os métodos e atributos genéricos(comuns), que geralmente nós vamos utilizar na maioria das nossas funções
-    private name: string;
+    private readonly name: string;
     private readonly account_number: number;
-    private balance: number = 0;
-    private status: boolean = false;
+    public balance: number = 0;
+    public status: boolean = true;
 
   constructor(name: string, account_number: number){
     this.name = name;
@@ -10,25 +10,20 @@ export abstract class Account {//numa classe abstrata nós podemos centralizar t
   };  
 
 
-  public set_name = (name: string): void => {
-     this.name = name;
-    console.log("New name saved.");
-  }
-
   public get_name = ():string => {
-     return this.name;
+    return this.name;
   }
 
-  public deposit = (): void => {
-    this.validate_status() ?console.log("you deposited.") :console.log("your status is false. Verify if you have some pendency")
+  public deposit = (deposit_value: number): void => {
+     this.balance = deposit_value; console.log(`${this.name} deposited: R$${deposit_value}`)
   }
 
-  public withdraw = (): void => {
-    console.log("you withdraw.")
+  public withdraw = (withdraw_value: number): void => {
+    this.status && this.balance > withdraw_value  ? (() => { this.balance = this.balance - withdraw_value; console.log(`withdraw of ${withdraw_value} concluded!`) })()   :console.log(`You can't withdraw an amount  greter than ${this.balance}`);
   }
                                   
   public show_balance = (): void => {
-    console.log(this.balance)
+    console.log(`Your current balance is: R$${this.balance}`)
   };
 
   private validate_status = (): boolean => {
